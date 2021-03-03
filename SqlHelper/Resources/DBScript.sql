@@ -1,0 +1,62 @@
+CREATE TABLE [ActionsLog]
+(
+   [ID] INT NOT NULL IDENTITY (1,1),
+   [Domain] NVARCHAR(128) NOT NULL,
+   [Username] NVARCHAR(128) NOT NULL,
+   [Action] SMALLINT NOT NULL,
+   [Date] DATETIME NOT NULL
+);
+
+CREATE TABLE [FailedAttempts]
+(
+   [ID] INT NOT NULL IDENTITY (1,1),
+   [Domain] NVARCHAR(128) NOT NULL,
+   [Username] NVARCHAR(128) NOT NULL,
+   [AttemptTime] DATETIME NOT NULL
+);
+
+CREATE TABLE [LockedOutUsers]
+(
+   [ID] INT NOT NULL IDENTITY (1,1),
+   [Domain] NVARCHAR(128) NOT NULL,
+   [Username] NVARCHAR(128) NOT NULL,
+   [LockedOutAt] DATETIME NOT NULL
+);
+
+CREATE TABLE [UnsubscribedUsers]
+(
+   [ID] INT NOT NULL IDENTITY (1,1),
+   [Domain] NVARCHAR(128) NOT NULL,
+   [Username] NVARCHAR(128) NOT NULL
+);
+
+CREATE TABLE [UserAnswers]
+(
+   [ID] INT NOT NULL IDENTITY (1,1),
+   [UserID] INT NOT NULL,
+   [Question] NVARCHAR(256) NOT NULL,
+   [Answer] NVARCHAR(256) NOT NULL
+);
+
+CREATE TABLE [Users]
+(
+   [ID] INT NOT NULL IDENTITY (1,1),
+   [Domain] NVARCHAR(128) NOT NULL,
+   [Username] NVARCHAR(128) NOT NULL,
+   [DateEnrolled] DATETIME NOT NULL
+);
+
+ALTER TABLE [ActionsLog] ADD CONSTRAINT [PK_ActionsLog] PRIMARY KEY ([ID]);
+
+ALTER TABLE [FailedAttempts] ADD CONSTRAINT [PK_FailedAttempts] PRIMARY KEY ([ID]);
+
+ALTER TABLE [LockedOutUsers] ADD CONSTRAINT [PK_LockedOutUsers] PRIMARY KEY ([ID]);
+
+ALTER TABLE [UnsubscribedUsers] ADD CONSTRAINT [PK_UnsubscribedUsers] PRIMARY KEY ([ID]);
+
+ALTER TABLE [UserAnswers] ADD CONSTRAINT [PK_UserAnswers] PRIMARY KEY ([ID]);
+
+ALTER TABLE [Users] ADD CONSTRAINT [PK_Users] PRIMARY KEY ([ID]);
+
+ALTER TABLE [UserAnswers] ADD CONSTRAINT [FK_UserAnswers_Users] FOREIGN KEY ([UserID])
+   REFERENCES [Users] ([ID]) ON DELETE CASCADE ON UPDATE NO ACTION;
